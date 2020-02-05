@@ -1,0 +1,38 @@
+{
+    "name": "@awes-io/resize",
+    "version": "1.0.1",
+    "description": "Cloudflare Image Resizing: simple API for URL generation.",
+    "keywords": [
+        "cloudflare",
+        "resize",
+        "resizing",
+        "cropping",
+        "crop",
+        "image",
+        "api",
+        "awes-io"
+    ],
+    "scripts": {
+        "test": "mocha -r esm test/*.test.js"
+    },
+    "devDependencies": {
+        "mocha": "^5.2.0",
+        "esm": "^3.2.25",
+        "prettier": "^1.18.2",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "babel-eslint": "^10.0.3"
+    },
+    "homepage": "https://www.awes.io",
+    "bugs": {
+        "url": "https://github.com/awes-io/resize/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:awes-io/resize.git"
+    },
+    "license": "MIT",
+    "author": "Awescode GmbH <info@awescode.de> (https://www.awescode.de)",
+    "main": "src/index.js"
+}
