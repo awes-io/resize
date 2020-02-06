@@ -1,6 +1,6 @@
 {
     "name": "@awes-io/resize",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Cloudflare Image Resizing: simple API for URL generation.",
     "keywords": [
         "cloudflare",
