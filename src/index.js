@@ -10,7 +10,7 @@ const CROP_ENDPOINT = 'cdn-cgi/image'
  * @param {number}  width - Width of the image, undefined by default
  * @param {object}  options - List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/
  * */
-const resize = (url, width, options) => {
+function resize(url, width, options) {
     let parsedUrl = {}
     try {
         parsedUrl = new URL(url)
@@ -18,7 +18,10 @@ const resize = (url, width, options) => {
         console.error(e)
     }
 
-    return `${parsedUrl.origin}/${CROP_ENDPOINT}/${_getOptions(width, options)}${parsedUrl.pathname}`
+    return `${parsedUrl.origin}/${CROP_ENDPOINT}/${_getOptions(
+        width,
+        options
+    )}${parsedUrl.pathname}`
 }
 
 // get string with paramentes
