@@ -53,6 +53,7 @@ resize(url, width = null, options = null)
 | url              | `String` | -       | Link to the original image.                           |
 | width            | `Number` | null    | (Optional) Width of the image, undefined by default.  |
 | options          | `Object` | null    | (Optional) List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/  |
+| customDomain     | `String` | null    | Use the option if you would like to change original domain name. |
 
 
 ### Cloudflare Image Resizing Documentation

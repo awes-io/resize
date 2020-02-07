@@ -9,8 +9,9 @@ const CROP_ENDPOINT = 'cdn-cgi/image'
  * @param {string}  url - Link to the original image
  * @param {number}  width - Width of the image, undefined by default
  * @param {object}  options - List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/
+ * @param {object}  customDomain - Use the option if you would like to change original domain name.
  * */
-function resize(url, width, options) {
+function resize(url, width, options, customDomain) {
     let parsedUrl = {}
     try {
         parsedUrl = new URL(url)
@@ -18,10 +19,14 @@ function resize(url, width, options) {
         console.error(e)
     }
 
-    return `${parsedUrl.origin}/${CROP_ENDPOINT}/${_getOptions(
-        width,
-        options
-    )}${parsedUrl.pathname}`
+    let cdnDomain = parsedUrl.origin
+    if (typeof customDomain !== 'undefined' && customDomain != '') {
+        cdnDomain = customDomain
+    }
+    // customDomain
+    return `${cdnDomain}/${CROP_ENDPOINT}/${_getOptions(width, options)}${
+        parsedUrl.pathname
+    }`
 }
 
 // get string with paramentes
@@ -36,7 +41,7 @@ const _getOptions = (width, options) => {
     }
 
     // apply custom options
-    if (typeof options !== 'undefined') {
+    if (typeof options !== 'undefined' && options) {
         Object.keys(options).forEach(function(key) {
             if (parameters.hasOwnProperty(key)) {
                 parameters[key] = options[key]
