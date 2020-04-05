@@ -1,6 +1,6 @@
 {
     "name": "@awes-io/resize",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Cloudflare Image Resizing: simple API for URL generation.",
     "keywords": [
         "cloudflare",
@@ -17,16 +17,21 @@
         "test": "mocha -r esm test/*.test.js",
         "pkg": "yarn build && npm publish --access public"
     },
+    "dependencies": {
+        "lodash": "^4.17.15"
+    },
     "devDependencies": {
-        "mocha": "^5.2.0",
-        "esm": "^3.2.25",
-        "prettier": "^1.18.2",
+        "@babel/core": "^7.8.4",
+        "@babel/preset-env": "^7.8.4",
+        "@rollup/plugin-node-resolve": "^7.1.1",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "babel-eslint": "^10.0.3",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.9.0",
         "eslint-plugin-prettier": "^3.1.2",
-        "babel-eslint": "^10.0.3",
-        "@babel/core": "^7.8.4",
-        "@babel/preset-env": "^7.8.4",
+        "esm": "^3.2.25",
+        "mocha": "^5.2.0",
+        "prettier": "^1.18.2",
         "rollup": "^1.30.1",
         "rollup-plugin-babel": "^4.3.3"
     },
