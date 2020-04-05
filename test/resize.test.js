@@ -1,81 +1,117 @@
 import assert from 'assert'
 import resize from '../src/index.js'
 
-const domain = 'https://example.com'
+const domain = 'example.com'
+const imagePath = '/4-formatOriginal.jpg'
+const cropPrefix = '/cdn-cgi/image/'
 
-describe('general', function() {
-    it('should be quality equal to 75', function() {
+describe('Google Storage and Domains', function() {
+    it('Original image from Google Storage', function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`),
-            `${domain}/cdn-cgi/image/q=75/images/example.jpg`
-        )
-    })
-    it('check with several options', function() {
-        assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, 500, { fit: 'cover' }),
-            `${domain}/cdn-cgi/image/fit=cover,w=500,q=75/images/example.jpg`
-        )
-    })
-})
-
-describe('width', function() {
-    it('should be without width, just quality', function() {
-        assert.strictEqual(
-            resize(`${domain}/images/example.jpg`),
-            `${domain}/cdn-cgi/image/q=75/images/example.jpg`
+            resize(`https://storage.googleapis.com/${domain}${imagePath}`),
+            `https://${domain}${cropPrefix}q=85${imagePath}`
         )
     })
 
-    it('should be width equal to 640', function() {
+    it('Original image from CDN', function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, 640),
-            `${domain}/cdn-cgi/image/w=640,q=75/images/example.jpg`
+            resize(`https://${domain}${imagePath}`),
+            `https://${domain}${cropPrefix}q=85${imagePath}`
         )
     })
 
-    it('should be width equal to 200', function() {
+    it("Original image with custom domain and HTTPS (params: width: null, aspect: '')", function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, 640, { w: 200 }),
-            `${domain}/cdn-cgi/image/w=200,q=75/images/example.jpg`
+            resize(`https://dev.${domain}${imagePath}`, null, '', {
+                domain: 'example.com'
+            }),
+            `https://${domain}${cropPrefix}q=85${imagePath}`
         )
     })
 
-    it('should be width equal to 100', function() {
+    it('Original image with custom domain HTTP (params: width: 0, aspect: null)', function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, null, { w: 100 }),
-            `${domain}/cdn-cgi/image/w=100,q=75/images/example.jpg`
+            resize(`http://dev.${domain}${imagePath}`, 0, null, {
+                domain: 'example.com'
+            }),
+            `http://${domain}${cropPrefix}q=85${imagePath}`
         )
     })
-})
 
-describe('quality', function() {
-    it('should be quality equal to 50', function() {
+    it('Original image with custom Domain and custom protocol (params: width: undefined, aspect: undefined)', function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, null, { q: 50 }),
-            `${domain}/cdn-cgi/image/q=50/images/example.jpg`
+            resize(`http://dev.${domain}${imagePath}`, undefined, undefined, {
+                domain: 'example.com',
+                protocol: 'https'
+            }),
+            `https://${domain}${cropPrefix}q=85${imagePath}`
         )
     })
-})
 
-describe('options', function() {
-    it('should be without options', function() {
+    it('Subdomain should be as a subdomain (params: width: undefined, aspect: 0)', function() {
         assert.strictEqual(
-            resize(`${domain}/images/example.jpg`, 100, {}),
-            `${domain}/cdn-cgi/image/w=100,q=75/images/example.jpg`
+            resize(`http://dev.${domain}${imagePath}`, undefined, 0, {
+                protocol: 'https'
+            }),
+            `https://dev.${domain}${cropPrefix}q=85${imagePath}`
         )
     })
 })
 
-describe('customDomain', function() {
-    it('should be another original domain', function() {
+describe('Crop testing', function() {
+    it('width 1600 and aspect ratio 16x9', function() {
         assert.strictEqual(
             resize(
-                `${domain}/images/example.jpg`,
-                100,
-                null,
-                'http://example-another.com'
+                `https://storage.googleapis.com/${domain}${imagePath}`,
+                1600,
+                '16x9'
             ),
-            `http://example-another.com/cdn-cgi/image/w=100,q=75/images/example.jpg`
+            `https://${domain}${cropPrefix}h=900,gravity=0.5x0.5,fit=cover,w=1600,q=85${imagePath}`
+        )
+    })
+    it('width 1600 and aspect ratio wrong ration 16', function() {
+        assert.strictEqual(
+            resize(
+                `https://storage.googleapis.com/${domain}${imagePath}`,
+                1600,
+                16
+            ),
+            `https://${domain}${cropPrefix}h=900,gravity=0.5x0.5,fit=cover,w=1600,q=85${imagePath}`
+        )
+    })
+    it('width 1600 and aspect ratio 4:3', function() {
+        assert.strictEqual(
+            resize(
+                `https://storage.googleapis.com/${domain}${imagePath}`,
+                1600,
+                '4x3'
+            ),
+            `https://${domain}${cropPrefix}h=1200,gravity=0.5x0.5,fit=cover,w=1600,q=85${imagePath}`
+        )
+    })
+    it('width 1200 and aspect ratio 3X4 and custom options', function() {
+        assert.strictEqual(
+            resize(
+                `https://storage.googleapis.com/${domain}${imagePath}`,
+                1200,
+                '3x4',
+                { options: { q: 75 } }
+            ),
+            `https://${domain}${cropPrefix}h=1600,gravity=0.5x0.5,fit=cover,w=1200,q=75${imagePath}`
+        )
+    })
+})
+
+describe('Customization', function() {
+    it('prefix should be customized', function() {
+        assert.strictEqual(
+            resize(
+                `https://storage.googleapis.com/${domain}${imagePath}`,
+                null,
+                null,
+                { prefix: '/test/' }
+            ),
+            `https://${domain}/test/q=85${imagePath}`
         )
     })
 })

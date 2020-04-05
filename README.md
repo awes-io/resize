@@ -43,7 +43,7 @@ resize('https://example.com/images/example.jpg', 640)
 
 ```javascript
 // URL generation with parameters for resizing
-resize(url, width = null, options = null)
+resize(url, width = null, aspect = null, options = null)
 ```
 
 ### Options
@@ -52,8 +52,9 @@ resize(url, width = null, options = null)
 | ---------------- | -------- | ------- | ----------------------------------------------------- |
 | url              | `String` | -       | Link to the original image.                           |
 | width            | `Number` | null    | (Optional) Width of the image, undefined by default.  |
-| options          | `Object` | null    | (Optional) List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/  |
-| customDomain     | `String` | null    | Use the option if you would like to change original domain name. |
+| aspect           | `String` | null    | (Optional) Aspect ratio for image, ie: 16x9, 4:3, etc.|
+| options          | `Object` | null    | (Optional) domain, protocol, crop, prefix             |
+| options.options          | `Object` | null    | (Optional) List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/  |
 
 
 ### Cloudflare Image Resizing Documentation
