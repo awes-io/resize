@@ -3,7 +3,7 @@ import { merge } from 'lodash'
 // quality of image by default
 const IMAGE_QUALITY = 85
 // proxy endpoint path for resize service
-const CROP_ENDPOINT = '/cdn-cgi/image/'
+const CROP_ENDPOINT = '/gci-cgi/image/'
 // default crop options
 const CROP_OPTIONS = {
     fit: 'cover',
@@ -24,6 +24,10 @@ const CROP_OPTIONS = {
  *      options - List of options for modify parameters for image. More info: https://developers.cloudflare.com/images/about/
  * */
 function resize(url, width, aspect, options) {
+    if (typeof url !== 'string' || url === '') {
+        return ''
+    }
+
     url = _filterUrl(url)
 
     let parsedUrl = {}
